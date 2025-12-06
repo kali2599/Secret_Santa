@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, render_template_string
 
 app = Flask(__name__)
@@ -32,4 +33,6 @@ def index():
         message = messages.get(name, "Name not found.")
     return render_template_string(html, message=message)
 
-app.run(port=5000)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))  # Render injects the correct port
+    app.run(host="0.0.0.0", port=port)
