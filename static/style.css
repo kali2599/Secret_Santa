@@ -6,7 +6,7 @@ body {
     overflow-x: hidden;
 
     /* Two-layer background */
-    background-image: url("snow.jpeg"), url("https://i.imgur.com/zYIlgBl.jpg");
+    background-image: url("snow.jpeg");
     background-repeat: repeat, no-repeat;
     background-position: center top, center;
     background-size: cover, cover;
