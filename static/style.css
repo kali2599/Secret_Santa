@@ -17,17 +17,17 @@ body {
 
 /* Center container */
 .container {
-    max-width: 500px;
-    margin: 80px auto;
+    max-width: 90%;
+    margin: 40px auto;
     background: rgba(0, 0, 0, 0.55);
-    padding: 30px;
-    border-radius: 20px;
+    padding: 20px;
+    border-radius: 15x;
     text-align: center;
     animation: fadeIn 1.6s ease-in-out;
 }
 
 .title {
-    font-size: 40px;
+    font-size: 32px;
     text-shadow: 3px 3px 10px #ff0000;
 }
 
@@ -44,11 +44,12 @@ body {
     padding: 12px;
     border-radius: 10px;
     border: none;
-    width: 70%;
-    font-size: 18px;
+    width: 100%;
+    font-size: 16px;
 }
 
 .btn {
+    width: 100%;
     padding: 12px 20px;
     font-size: 18px;
     background: #e60000;
@@ -100,4 +101,34 @@ body {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-20px); }
     to   { opacity: 1; transform: translateY(0); }
+}
+
+
+@media (max-width: 480px) {
+
+    .title {
+        font-size: 26px;
+    }
+
+    .result-card {
+        padding: 15px;
+    }
+
+    .santa-img {
+        width: 120px;
+    }
+
+    .name {
+        font-size: 28px;
+    }
+
+    .input-box {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .btn {
+        font-size: 16px;
+        padding: 10px;
+    }
 }

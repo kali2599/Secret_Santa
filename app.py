@@ -5,10 +5,10 @@ import os
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
-pairs = {"Sasso": 510, "Letizia" : 957}
+pairs = {"Sasso": 510, "Letizia" : 957, "Feffo": 655, "Davide": 0}
 
 # ---- SECRET SANTA SETUP ----
-codes = [510,957,2,3,4,5,6]
+codes = [510, 957, 655, 3, 4, 5, 0]
 names = ["Davide","Federico","Silvia","Chiara","Elena","Letizia","Ilaria"]
 
 random.shuffle(names)
