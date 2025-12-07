@@ -17,8 +17,6 @@ with open("secret_santa.json", "w") as file:
     json.dump(secret_santa, file)
     
 
-exit(0)
-
 @app.route("/", methods=["GET", "POST"])
 def index():
 
