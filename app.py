@@ -5,26 +5,30 @@ app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
 
-pairs = {"Sasso": 510, "Letizia": 957, "Feffo": 655, "Davide": 0, "Ilaria": 654, "Silvia": 840, "Elena": 734}
+pairs = {"Chiara": 510, "Letizia": 957, "Federico": 655, "Davide": 0, "Ilaria": 654, "Silvia": 840, "Elena": 734}
 
 codes = list(pairs.values())       # [510, 957, 655, 0, 654, 840, 734]
 names = ["Davide", "Federico", "Silvia", "Chiara", "Elena", "Letizia", "Ilaria"]
 
-def deranged_shuffle(codes, names, pairs):
-    """Shuffle names so that no code gets its original name in pairs"""
-    while True:
-        shuffled = names[:]
-        random.shuffle(shuffled)
-        # check for conflicts with pairs
-        conflict = False
-        for name, code in pairs.items():
-            if shuffled[codes.index(code)] == name:
-                conflict = True
-                break
-        if not conflict:
-            return dict(zip(codes, shuffled))
 
-secret_santa = deranged_shuffle(codes, names, pairs)
+        
+def my_shuffle(codes, names, pairs):
+    out = {}
+    names_copy = names[:]
+    for code in codes:
+        admit = False
+        while not admit:
+            name = random.choice(names_copy)
+            if code != pairs[name]:
+                admit = True
+                names_copy.remove(name)
+                out[code] = name
+    return out
+
+
+secret_santa = my_shuffle(codes, names, pairs)
+#print(secret_santa)
+
 
 with open("secret_santa.json", "w") as file:
     json.dump(secret_santa, file)
@@ -38,7 +42,7 @@ def index():
     if "attempts" not in session:
         session["attempts"] = 2
 
-    print(session)
+    #print(session)
 
     message = ""
     santa_name = ""
