@@ -4,14 +4,27 @@ import random, os, json
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
-pairs = {"Sasso": 510, "Letizia" : 957, "Feffo": 655, "Davide": 0, "Ilaria": 654, "Silvia": 840, "Elena": 734}
 
-# ---- SECRET SANTA SETUP ----
-codes = [510, 957, 655, 654, 840, 734, 0]
-names = ["Davide","Federico","Silvia","Chiara","Elena","Letizia","Ilaria"]
+pairs = {"Sasso": 510, "Letizia": 957, "Feffo": 655, "Davide": 0, "Ilaria": 654, "Silvia": 840, "Elena": 734}
 
-random.shuffle(names)
-secret_santa = dict(zip(codes, names))
+codes = list(pairs.values())       # [510, 957, 655, 0, 654, 840, 734]
+names = ["Davide", "Federico", "Silvia", "Chiara", "Elena", "Letizia", "Ilaria"]
+
+def deranged_shuffle(codes, names, pairs):
+    """Shuffle names so that no code gets its original name in pairs"""
+    while True:
+        shuffled = names[:]
+        random.shuffle(shuffled)
+        # check for conflicts with pairs
+        conflict = False
+        for name, code in pairs.items():
+            if shuffled[codes.index(code)] == name:
+                conflict = True
+                break
+        if not conflict:
+            return dict(zip(codes, shuffled))
+
+secret_santa = deranged_shuffle(codes, names, pairs)
 
 with open("secret_santa.json", "w") as file:
     json.dump(secret_santa, file)
