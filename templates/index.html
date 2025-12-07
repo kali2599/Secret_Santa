@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Secret Santa 🎅</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1 class="title">🎄 Secret Santa 🎄</h1>
+
+    {% if not correct %}
+        <p class="attempts">Attempts left: {{ attempts_left }}</p>
+
+        <form method="POST" class="form">
+            <input name="code" placeholder="Enter your code" class="input-box" required>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+
+        {% if message %}
+        <p class="message">{{ message }}</p>
+        {% endif %}
+    {% endif %}
+
+    {% if correct %}
+        <div class="result-card animated">
+            <img src="{{ url_for('static', filename='santa.png') }}" class="santa-img">
+            <h2 class="result-text">🎁 Your Secret Santa target is:</h2>
+            <h1 class="name">{{ santa_name }}</h1>
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

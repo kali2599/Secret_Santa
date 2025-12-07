@@ -1,77 +1,73 @@
-from flask import Flask, request, render_template_string, session
-import random, os
+from flask import Flask, request, render_template, session
+import random
+import os
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"   # required for session
+app.secret_key = "supersecretkey"
+
+pairs = {"Sasso": 510, "Letizia" : 957}
 
 # ---- SECRET SANTA SETUP ----
-codes = [0,1,2,3,4,5,6]
+codes = [510,957,2,3,4,5,6]
 names = ["Davide","Federico","Silvia","Chiara","Elena","Letizia","Ilaria"]
 
 random.shuffle(names)
 secret_santa = dict(zip(codes, names))
 
-# ---- HTML TEMPLATE ----
-html = """
-<h2>Enter your code</h2>
-
-{% if attempts_left is not none %}
-<p><strong>Attempts remaining:</strong> {{ attempts_left }}</p>
-{% endif %}
-
-<form method="post">
-  <input name="code" placeholder="Enter code">
-  <button type="submit">Submit</button>
-</form>
-
-{% if message %}
-<p><strong>{{ message }}</strong></p>
-{% endif %}
-"""
-
-# ---- ROUTE ----
 @app.route("/", methods=["GET", "POST"])
 def index():
-    # Initialize attempts if not present
+
     if "attempts" not in session:
-        session["attempts"] = 3   # user gets 3 attempts total
+        session["attempts"] = 2
+
+    print(session)
 
     message = ""
+    santa_name = ""
+    correct = False
     attempts_left = session["attempts"]
 
-    # Stop if attempts exhausted
     if attempts_left <= 0:
-        return render_template_string(
-            html,
-            message="No attempts left. Access denied.",
-            attempts_left=0
+        return render_template(
+            "index.html",
+            attempts_left=0,
+            message="❌ No attempts left. Access denied.",
+            correct=False,
+            santa_name=""
         )
 
     if request.method == "POST":
-        code_str = request.form["code"]
+        code_str = request.form.get("code", "")
 
-        # Ensure the input is numeric
         if not code_str.isdigit():
             session["attempts"] -= 1
-            return render_template_string(
-                html,
-                message="Code must be a number.",
-                attempts_left=session["attempts"]
+            return render_template(
+                "index.html",
+                attempts_left=session["attempts"],
+                message="⚠️ Code must be a number!",
+                correct=False,
+                santa_name=""
             )
 
         code = int(code_str)
 
-        # Check if code exists
         if code in secret_santa:
-            assigned = secret_santa[code]
-            message = f"Your Secret Santa is: {assigned}"
+            santa_name = secret_santa[code]
+            correct = True
+            message = ""
         else:
             session["attempts"] -= 1
-            message = f"Wrong code! Try again."
+            message = "❌ Wrong code! Try again."
 
         attempts_left = session["attempts"]
 
-    return render_template_string(html, message=message, attempts_left=attempts_left)
+    return render_template(
+        "index.html",
+        attempts_left=attempts_left,
+        message=message,
+        correct=correct,
+        santa_name=santa_name
+    )
 
 
 if __name__ == "__main__":
