@@ -3,37 +3,59 @@ body {
     padding: 0;
     font-family: "Comic Sans MS", sans-serif;
     color: #fff;
+    overflow-x: hidden;
 
     /* Two-layer background */
     background-image: url("snow.jpeg"), url("https://i.imgur.com/zYIlgBl.jpg");
-
-    /* BACKGROUND LAYER 1: snow GIF */
-    background-repeat: no-repeat, no-repeat;
-    background-position: top center, center;
-    background-size: contain, cover;
-
+    background-repeat: repeat, no-repeat;
+    background-position: center top, center;
+    background-size: cover, cover;
+    background-attachment: fixed;
     background-blend-mode: lighten;
+}
+
+/* Snowfall effect overlay */
+.snow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: url('snow.png') repeat;
+    animation: snowFall 10s linear infinite;
+    z-index: 0;
+}
+
+@keyframes snowFall {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 1000px; }
 }
 
 /* Center container */
 .container {
+    position: relative;
     max-width: 90%;
     margin: 40px auto;
-    background: rgba(0, 0, 0, 0.55);
-    padding: 20px;
-    border-radius: 15x;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 25px;
+    border-radius: 20px;
     text-align: center;
+    box-shadow: 0 0 20px rgba(255,255,255,0.2);
     animation: fadeIn 1.6s ease-in-out;
+    z-index: 1;
 }
 
 .title {
     font-size: 32px;
-    text-shadow: 3px 3px 10px #ff0000;
+    text-shadow: 3px 3px 12px #ff0000, 0 0 10px #fff;
+    color: #fff0f5;
 }
 
 .attempts {
     font-size: 20px;
     margin-bottom: 15px;
+    text-shadow: 2px 2px 5px #000;
 }
 
 .form {
@@ -42,7 +64,7 @@ body {
 
 .input-box {
     padding: 12px;
-    border-radius: 10px;
+    border-radius: 15px;
     border: none;
     width: 100%;
     font-size: 16px;
@@ -52,17 +74,19 @@ body {
     width: 100%;
     padding: 12px 20px;
     font-size: 18px;
-    background: #e60000;
+    background: linear-gradient(135deg, #e60000, #ff4d4d);
     border: none;
-    border-radius: 10px;
+    border-radius: 15px;
     color: white;
     cursor: pointer;
     transition: 0.3s;
     margin-top: 10px;
+    box-shadow: 0 0 15px #ff6666;
 }
 
 .btn:hover {
-    background: #cc0000;
+    background: linear-gradient(135deg, #ff1a1a, #ff8080);
+    box-shadow: 0 0 25px #ffcccc;
 }
 
 /* Wrong code message */
@@ -70,13 +94,15 @@ body {
     color: #ffbbbb;
     font-size: 18px;
     margin-top: 15px;
+    text-shadow: 1px 1px 3px #000;
 }
 
 /* Correct code animation */
 .result-card {
-    background: rgba(0, 0, 0, 0.55);
+    background: rgba(0, 0, 0, 0.65);
     padding: 25px;
-    border-radius: 15px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0,255,255,0.3);
     animation: pop 1s ease-out forwards;
 }
 
@@ -88,7 +114,7 @@ body {
 .name {
     font-size: 40px;
     color: #00ffea;
-    text-shadow: 3px 3px 20px #00ffee;
+    text-shadow: 3px 3px 20px #00ffee, 0 0 10px #fff;
 }
 
 /* Animations */
@@ -103,32 +129,70 @@ body {
     to   { opacity: 1; transform: translateY(0); }
 }
 
-
+/* Mobile responsiveness */
 @media (max-width: 480px) {
+    .title { font-size: 26px; }
+    .result-card { padding: 15px; }
+    .santa-img { width: 120px; }
+    .name { font-size: 28px; }
+    .input-box { font-size: 16px; padding: 10px; }
+    .btn { font-size: 16px; padding: 10px; }
+}
 
-    .title {
-        font-size: 26px;
-    }
 
-    .result-card {
-        padding: 15px;
-    }
+/* Pulse animation for buttons */
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 15px #ff6666; }
+    50% { box-shadow: 0 0 25px #ffcccc; }
+}
 
-    .santa-img {
-        width: 120px;
-    }
+.btn.pulse {
+    animation: pulseGlow 2s infinite;
+}
 
-    .name {
-        font-size: 28px;
-    }
+/* Falling gifts */
+.gifts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
 
-    .input-box {
-        font-size: 16px;
-        padding: 10px;
-    }
+.gift {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: url("gift.png") no-repeat center/contain;
+    animation: fall linear infinite;
+}
 
-    .btn {
-        font-size: 16px;
-        padding: 10px;
+/* Animate gifts randomly */
+@keyframes fall {
+    0% {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 0;
     }
+    10% { opacity: 1; }
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0.8;
+    }
+}
+
+/* Randomize gift positions and speed */
+.gift:nth-child(1) { left: 10%; animation-duration: 8s; animation-delay: 0s; }
+.gift:nth-child(2) { left: 25%; animation-duration: 10s; animation-delay: 2s; }
+.gift:nth-child(3) { left: 40%; animation-duration: 9s; animation-delay: 1s; }
+.gift:nth-child(4) { left: 55%; animation-duration: 11s; animation-delay: 3s; }
+.gift:nth-child(5) { left: 70%; animation-duration: 8s; animation-delay: 0.5s; }
+.gift:nth-child(6) { left: 85%; animation-duration: 10s; animation-delay: 2.5s; }
+.gift:nth-child(7) { left: 15%; animation-duration: 12s; animation-delay: 1.2s; }
+.gift:nth-child(8) { left: 50%; animation-duration: 9s; animation-delay: 0.8s; }
+
+/* Adjust for mobile */
+@media (max-width: 480px) {
+    .gift { width: 30px; height: 30px; }
 }

@@ -5,10 +5,10 @@ import os
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
-pairs = {"Sasso": 510, "Letizia" : 957, "Feffo": 655, "Davide": 0}
+pairs = {"Sasso": 510, "Letizia" : 957, "Feffo": 655, "Davide": 0, "Ilaria": 654, "Silvia": 840, "Elena": 734}
 
 # ---- SECRET SANTA SETUP ----
-codes = [510, 957, 655, 3, 4, 5, 0]
+codes = [510, 957, 655, 654, 840, 734, 0]
 names = ["Davide","Federico","Silvia","Chiara","Elena","Letizia","Ilaria"]
 
 random.shuffle(names)
@@ -16,6 +16,8 @@ secret_santa = dict(zip(codes, names))
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+
+    #session.clear()
 
     if "attempts" not in session:
         session["attempts"] = 2

@@ -8,6 +8,10 @@
 </head>
 <body>
 
+<audio autoplay loop>
+    <source src="{{ url_for('static', filename='jingle-bells.mp3') }}" type="audio/mpeg">
+</audio>
+
 <div class="container">
 
     <h1 class="title">🎄 Secret Santa 🎄</h1>
@@ -17,7 +21,7 @@
 
         <form method="POST" class="form">
             <input name="code" placeholder="Enter your code" class="input-box" required>
-            <button type="submit" class="btn">Submit</button>
+            <button type="submit" class="btn pulse">Submit</button>
         </form>
 
         {% if message %}
@@ -33,7 +37,18 @@
         </div>
     {% endif %}
 
+    <!-- Snowfall overlay -->
+    <div class="snow"></div>
+
+    <!-- Falling gifts -->
+    <div class="gifts">
+        {% for i in range(8) %}
+        <div class="gift"></div>
+        {% endfor %}
+    </div>
+
 </div>
+
 
 </body>
 </html>
