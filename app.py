@@ -59,7 +59,7 @@ def index():
         if code in secret_santa:
             with open("secret_santa.json") as f:
                 secret_santa_file = json.load(f)
-                santa_name = secret_santa_file[code]
+                santa_name = secret_santa_file[str(code)]
                 correct = True
                 message = ""
         else:
