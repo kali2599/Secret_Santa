@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template, session
-import random
-import os
+import random, os, json
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
@@ -13,6 +12,12 @@ names = ["Davide","Federico","Silvia","Chiara","Elena","Letizia","Ilaria"]
 
 random.shuffle(names)
 secret_santa = dict(zip(codes, names))
+
+with open("secret_santa.json", "w") as file:
+    json.dump(secret_santa, file)
+    
+
+exit(0)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -54,9 +59,11 @@ def index():
         code = int(code_str)
 
         if code in secret_santa:
-            santa_name = secret_santa[code]
-            correct = True
-            message = ""
+            with open("secret_santa.json") as f:
+                secret_santa_file = json.load(f)
+                santa_name = secret_santa_file[code]
+                correct = True
+                message = ""
         else:
             session["attempts"] -= 1
             message = "❌ Wrong code! Try again."
