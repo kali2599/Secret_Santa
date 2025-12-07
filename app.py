@@ -34,5 +34,5 @@ def index():
     return render_template_string(html, message=message)
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Render injects the correct port
+    port = int(os.environ.get("PORT", 8000))  # Render injects the correct port
     app.run(host="0.0.0.0", port=port)
