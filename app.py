@@ -26,12 +26,17 @@ def my_shuffle(codes, names, pairs):
     return out
 
 
+#TODO: test if the file is effectively created only once for everyone
 secret_santa = my_shuffle(codes, names, pairs)
-#print(secret_santa)
-
-
-with open("secret_santa.json", "w") as file:
-    json.dump(secret_santa, file)
+if os.path.exists("secret_santa.json"):
+    with open("secret_santa.json", "r") as file:
+        secret_santa = json.load(file)
+else:
+    secret_santa = my_shuffle(codes, names, pairs)
+    with open("secret_santa.json", "w") as file:
+        json.dump(secret_santa, file)
+    
+print(secret_santa)
     
 
 @app.route("/", methods=["GET", "POST"])
